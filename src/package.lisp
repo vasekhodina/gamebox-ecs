@@ -1,6 +1,7 @@
 (in-package :cl-user)
 
 (defpackage #:gamebox-ecs
+  (:nicknames #:box.ecs)
   (:use #:cl
         #:alexandria)
   (:export #:init-ecs

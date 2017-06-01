@@ -9,10 +9,6 @@ yet, so if you do so, please feel free to file issues or lack of features you ma
 
 ## Install
 
-This system is not yet available to be installed automatically
-with [Quicklisp](https://www.quicklisp.org). To manually install using Quicklisp, clone this
-repository into your `local-projects` directory and issue the following in your REPL:
-
 ``` lisp
 (ql:quickload :gamebox-ecs)
 ```
