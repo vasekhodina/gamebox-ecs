@@ -1,9 +1,15 @@
 (in-package :gamebox-ecs)
 
 (defclass trait ()
-  ((attrs :accessor %trait-attrs
+  ((id :reader id
+       :initarg :id)
+   (attrs :accessor %trait-attrs
           :initarg :attrs
           :initform nil)))
+
+(defmethod print-object ((object trait) stream)
+  (print-unreadable-object (object stream)
+    (format stream "TRAIT:~A" (id object))))
 
 (defmacro deftrait (name &body (attrs))
   "Define a new trait."
@@ -11,8 +17,9 @@
                              (intern (format nil "~A/~A" name x)))
                            attrs)))
     `(progn
+       (defclass ,name (trait) ())
        (setf (gethash ',name (%traits *ecs*))
-             (make-instance 'trait :attrs ',attr-list))
+             (make-instance ',name :id ',name :attrs ',attr-list))
        ,@(loop :for attr :in attr-list
                :for key = (make-keyword attr)
                :collect `(defun ,attr (gob-id)
@@ -85,7 +92,7 @@
           :when (attr gob-id attr)
             :do (attr-remove gob-id attr))))
 
-(slog:define-message :debug :ecs.trair.add
+(slog:define-message :debug :ecs.trait.add
   "GOB ~A now has the trait ~A.")
 
 (defgeneric on-trait-added (gob-id trait)

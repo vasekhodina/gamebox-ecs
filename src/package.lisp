@@ -14,6 +14,18 @@
            #:remove-gob
            #:on-gob-created
            #:on-gob-deleted
+           #:get-tag
+           #:gob-by-tag
+           #:tag-add
+           #:tag-remove
+           #:on-tag-added
+           #:on-tag-removed
+           #:gob-groups
+           #:gobs-by-group
+           #:group-join
+           #:group-leave
+           #:on-group-join
+           #:on-group-leave
            #:traits
            #:deftrait
            #:trait-add
