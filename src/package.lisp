@@ -27,6 +27,7 @@
            #:on-group-join
            #:on-group-leave
            #:traits
+           #:has-trait-p
            #:deftrait
            #:trait-add
            #:trait-remove

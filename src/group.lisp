@@ -26,7 +26,7 @@ each group that was left."
     (remhash group (%groups *ecs*))
     (on-group-deleted group)))
 
-(defun gob-groups (gob-id)
+(defun groups (gob-id)
   "Get a list of all groups a GOB is a member of."
   (%gob-groups (gob gob-id)))
 
@@ -36,11 +36,11 @@ each group that was left."
 
 (defun group-member-p (gob-id group)
   "Check if a GOB is a member of a specific group."
-  (when (member group (gob-groups gob-id)) t))
+  (when (member group (groups gob-id)) t))
 
 (defun grouped-p (gob-id)
   "Check if a GOB is a member of any group."
-  (when (gob-groups gob-id) t))
+  (when (groups gob-id) t))
 
 (defun group-join (gob-id group)
   "Add a GOB to a group. The ON-GROUP-JOIN event will be triggered in order to
@@ -63,7 +63,7 @@ order to provide custom functionality depending on the group that was left."
 (defun group-leave-all (gob-id)
   "Remove a GOB from all groups. The ON-GROUP-LEAVE event will be triggered for
 each group that was left."
-  (dolist (group (gob-groups gob-id))
+  (dolist (group (groups gob-id))
     (group-leave gob-id group)))
 
 (slog:define-message :debug :ecs.group.join

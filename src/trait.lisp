@@ -5,7 +5,9 @@
        :initarg :id)
    (attrs :accessor %trait-attrs
           :initarg :attrs
-          :initform nil)))
+          :initform nil)
+   (defaults :reader %defaults
+             :initform (make-hash-table))))
 
 (defmethod print-object ((object trait) stream)
   (print-unreadable-object (object stream)
@@ -14,13 +16,19 @@
 (defmacro deftrait (name &body (attrs))
   "Define a new trait."
   (let ((attr-list (mapcar (lambda (x)
-                             (intern (format nil "~A/~A" name x)))
+                             (let ((attr (ensure-list x)))
+                               (list
+                                (intern (format nil "~A/~A" name (car attr)))
+                                (cadr attr))))
                            attrs)))
     `(progn
        (defclass ,name (trait) ())
        (setf (gethash ',name (%traits *ecs*))
-             (make-instance ',name :id ',name :attrs ',attr-list))
-       ,@(loop :for attr :in attr-list
+             (make-instance ',name :id ',name :attrs ',(mapcar #'car attr-list)))
+       (loop :with trait = (gethash ',name (%traits *ecs*))
+             :for (attr default) :in ',attr-list
+             :do (setf (gethash attr (%defaults trait)) default))
+       ,@(loop :for (attr nil) :in attr-list
                :for key = (make-keyword attr)
                :collect `(defun ,attr (gob-id)
                            (attr gob-id ,key))
@@ -72,14 +80,17 @@
   "Check if a GOB has a trait."
   (when (member trait (traits gob-id)) t))
 
-(defun trait-add (gob-id trait attrs)
+(defun trait-add (gob-id trait-id attrs)
   "Add a new trait to a GOB."
-  (when (traitp trait)
-    (pushnew trait (traits gob-id))
-    (on-trait-added gob-id trait))
+  (when (traitp trait-id)
+    (pushnew trait-id (traits gob-id))
+    (on-trait-added gob-id trait-id))
   (cache-gobs)
+  (loop :with trait = (gethash trait-id (%traits *ecs*))
+        :for (attr . default) :in (hash-table-alist (%defaults trait))
+        :do (setf (attr gob-id (make-keyword attr)) (eval default)))
   (loop :for (attr . value) :in (plist-alist attrs)
-        :when (member attr (mapcar #'make-keyword (trait-attrs trait)))
+        :when (member attr (mapcar #'make-keyword (trait-attrs trait-id)))
           :do (setf (attr gob-id attr) value)))
 
 (defun trait-remove (gob-id trait)
