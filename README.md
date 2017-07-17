@@ -58,7 +58,8 @@ will be iterated over.
      :interval 2 ; will be called only once every 2 game ticks
      :filters ((all groups test-group-1 test-group-2) ; must be a member of all
                                                       ; of these groups
-               (any traits test-trait-1 test-trait-2) ; must have at least one of these traits
+               (any traits test-trait-1 test-trait-2) ; must have at least one
+                                                      ; of these traits
                (none traits not-this-trait)) ; must not have this trait
      :grouping (e1 e2)) ; gobs will be combined in pairs so they can be compared
                         ; in parallel
