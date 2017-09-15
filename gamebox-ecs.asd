@@ -8,9 +8,10 @@
   :homepage "https://github.com/mfiano/gamebox-ecs"
   :bug-tracker "https://github.com/mfiano/gamebox-ecs/issues"
   :source-control (:git "git@github.com:mfiano/gamebox-ecs.git")
-  :version "0.1.0"
+  :version "1.0.0"
   :encoding :utf-8
-  :long-description #.(uiop:read-file-string (uiop/pathname:subpathname *load-pathname* "README.md"))
+  :long-description #.(uiop:read-file-string
+                       (uiop/pathname:subpathname *load-pathname* "README.md"))
   :depends-on (#:alexandria
                #:simple-logger)
   :pathname "src"
