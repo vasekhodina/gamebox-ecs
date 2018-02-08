@@ -89,7 +89,7 @@ Cycle the behaviors. This should be called in your main loop:
 
 ## License
 
-Copyright © 2016 Michael Fiano <michael.fiano@gmail.com>.
+Copyright © 2016 Michael Fiano <mail@michaelfiano.com>.
 
 Licensed under the MIT License.
 
