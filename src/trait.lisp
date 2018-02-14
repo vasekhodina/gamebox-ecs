@@ -1,4 +1,4 @@
-(in-package :gamebox-ecs)
+(in-package :box.ecs)
 
 (defclass trait ()
   ((id :reader id
@@ -16,7 +16,7 @@
 (defmacro deftrait (name &body (attrs))
   "Define a new trait."
   (let ((attr-list (mapcar (lambda (x)
-                             (let ((attr (ensure-list x)))
+                             (let ((attr (alexandria:ensure-list x)))
                                (list
                                 (intern (format nil "~A/~A" name (car attr)))
                                 (cadr attr))))
@@ -29,7 +29,7 @@
              :for (attr default) :in ',attr-list
              :do (setf (gethash attr (%defaults trait)) default))
        ,@(loop :for (attr nil) :in attr-list
-               :for key = (make-keyword attr)
+               :for key = (alexandria:make-keyword attr)
                :collect `(defun ,attr (gob-id)
                            (attr gob-id ,key))
                :collect `(defun (setf ,attr) (attr gob-id)
@@ -41,8 +41,8 @@
   (mapcar
    (lambda (trait)
      (loop :with name = (car trait)
-           :for (k . v) :in (plist-alist (cdr trait))
-           :collect (make-keyword (format nil "~A/~A" name k)) :into slots
+           :for (k . v) :in (alexandria:plist-alist (cdr trait))
+           :collect (alexandria:make-keyword (format nil "~A/~A" name k)) :into slots
            :collect (gensym (symbol-name k)) :into vars
            :collect v :into values
            :finally (return (list name slots (mapcar #'list vars values)))))
@@ -50,7 +50,7 @@
 
 (defun trait-list ()
   "Get a list of all defined traits."
-  (hash-table-keys (%traits *ecs*)))
+  (alexandria:hash-table-keys (%traits *ecs*)))
 
 (defun traitp (trait)
   "Check if a trait is defined."
@@ -87,10 +87,10 @@
     (on-trait-added gob-id trait-id))
   (cache-gobs)
   (loop :with trait = (gethash trait-id (%traits *ecs*))
-        :for (attr . default) :in (hash-table-alist (%defaults trait))
-        :do (setf (attr gob-id (make-keyword attr)) (eval default)))
-  (loop :for (attr . value) :in (plist-alist attrs)
-        :when (member attr (mapcar #'make-keyword (trait-attrs trait-id)))
+        :for (attr . default) :in (alexandria:hash-table-alist (%defaults trait))
+        :do (setf (attr gob-id (alexandria:make-keyword attr)) (eval default)))
+  (loop :for (attr . value) :in (alexandria:plist-alist attrs)
+        :when (member attr (mapcar #'alexandria:make-keyword (trait-attrs trait-id)))
           :do (setf (attr gob-id attr) value)))
 
 (defun trait-remove (gob-id trait)
@@ -99,7 +99,7 @@
     (deletef (traits gob-id) trait)
     (on-trait-removed gob-id trait)
     (cache-gobs)
-    (loop :for attr :in (mapcar #'make-keyword (trait-attrs trait))
+    (loop :for attr :in (mapcar #'alexandria:make-keyword (trait-attrs trait))
           :when (attr gob-id attr)
             :do (attr-remove gob-id attr))))
 

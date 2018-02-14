@@ -1,14 +1,15 @@
-(in-package :gamebox-ecs)
+(in-package :box.ecs)
 
 (defclass gob ()
-  ((tag :accessor %gob-tag
-        :initform nil)
-   (groups :accessor %gob-groups
-           :initform nil)
-   (traits :accessor %gob-traits
-           :initform nil)
-   (attrs :accessor %gob-attrs
-          :initform nil)))
+  ((%tag :accessor %gob-tag
+         :initform nil)
+   (%groups :accessor %gob-groups
+            :initform nil)
+   (%traits :accessor %gob-traits
+            :initform nil)
+   (%attrs :accessor %gob-attrs
+           :initform nil))
+  (:documentation "An object representing a game object/entity."))
 
 (defmacro make-gob (tag (&rest groups) &body traits)
   "Make a new GOB."
@@ -36,7 +37,7 @@
 
 (defun gob-list ()
   "Get a list of all active GOBs."
-  (hash-table-keys (gobs-active *ecs*)))
+  (alexandria:hash-table-keys (gobs-active *ecs*)))
 
 (defun %make-gob (&key tag groups traits)
   "Create a new GOB, optionally assigning a unique tag or a list of groups."

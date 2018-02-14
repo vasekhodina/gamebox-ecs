@@ -1,4 +1,4 @@
-(in-package :gamebox-ecs)
+(in-package :box.ecs)
 
 (defun all (list1 list2)
   "Check if all elements of LIST1 are in LIST2."

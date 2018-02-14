@@ -1,17 +1,15 @@
-(in-package :cl-user)
-
 (asdf:defsystem #:gamebox-ecs
-  :description "An implementation of the Entity-Component System (ECS) pattern, popular with game development."
+  :description "An implementation of the Entity-Component System (ECS) pattern, popular with game
+  development."
   :author "Michael Fiano <mail@michaelfiano.com>"
   :maintainer "Michael Fiano <mail@michaelfiano.com>"
   :license "MIT"
-  :homepage "https://github.com/mfiano/gamebox-ecs"
-  :bug-tracker "https://github.com/mfiano/gamebox-ecs/issues"
+  :homepage "https://www.michaelfiano.com/projects/gamebox-ecs"
   :source-control (:git "git@github.com:mfiano/gamebox-ecs.git")
+  :bug-tracker "https://github.com/mfiano/gamebox-ecs/issues"
   :version "1.0.0"
   :encoding :utf-8
-  :long-description #.(uiop:read-file-string
-                       (uiop/pathname:subpathname *load-pathname* "README.md"))
+  :long-description #.(uiop:read-file-string (uiop/pathname:subpathname *load-pathname* "README.md"))
   :depends-on (#:alexandria
                #:simple-logger)
   :pathname "src"

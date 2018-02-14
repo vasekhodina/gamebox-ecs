@@ -1,8 +1,8 @@
-(in-package :gamebox-ecs)
+(in-package :box.ecs)
 
 (defun group-list ()
   "Get a list of all active groups. An active group has at least one member."
-  (hash-table-keys (%groups *ecs*)))
+  (alexandria:hash-table-keys (%groups *ecs*)))
 
 (defun groupp (group)
   "Check if a group is active."
@@ -20,7 +20,7 @@
   "Delete a group. Current members of the deleted group will continue to exist,
 but will lose their membership. The ON-GROUP-LEAVE event will be triggered for
 each group that was left."
-  (dolist (gob (%group-members group))
+  (dolist (gob (group-members group))
     (group-leave gob group))
   (when (groupp group)
     (remhash group (%groups *ecs*))

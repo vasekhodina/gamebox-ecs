@@ -1,18 +1,18 @@
-(in-package :gamebox-ecs)
+(in-package :box.ecs)
 
 (defclass behavior ()
-  ((mode :reader mode
-         :initarg :mode)
-   (interval :reader interval
-             :initarg :interval)
-   (ticks :accessor ticks
-          :initform 0)
-   (filters :reader filters
-            :initarg :filters)
-   (grouping :accessor grouping
-             :initarg :grouping)
-   (gobs :accessor gobs
-         :initform nil)))
+  ((%mode :reader mode
+          :initarg :mode)
+   (%interval :reader interval
+              :initarg :interval)
+   (%ticks :accessor ticks
+           :initform 0)
+   (%filters :reader filters
+             :initarg :filters)
+   (%grouping :accessor grouping
+              :initarg :grouping)
+   (%gobs :accessor gobs
+          :initform nil)))
 
 (defmacro defbehavior (name (&key mode (interval 1) filters grouping)
                        &body body)
@@ -47,12 +47,12 @@
 
 (defun behavior-list ()
   "Get a list of all defined behaviors."
-  (hash-table-keys (behavior *ecs*)))
+  (alexandria:hash-table-keys (behavior *ecs*)))
 
 (defun collect-gobs (behavior)
   "Get a list of all GOBs that fall through the specified behavior's filters."
   (loop :with filters = (filters (behavior-by-name behavior))
-        :for gob-id :in (hash-table-keys (gobs-active *ecs*))
+        :for gob-id :in (alexandria:hash-table-keys (gobs-active *ecs*))
         :when (every #'identity
                      (loop :for (filter fn . items) :in filters
                            :collect (filter gob-id filter fn items)))
@@ -67,19 +67,19 @@
 (defun process-behavior (behavior)
   "Execute the specified behavior. The behavior definition's grouping determines parallel processing
 of GOBs."
-  (with-slots (interval ticks grouping gobs) (behavior-by-name behavior)
+  (with-slots (%interval %ticks %grouping %gobs) (behavior-by-name behavior)
     (let ((result))
-      (incf ticks)
-      (when (and (>= ticks interval)
-                 (>= (length gobs) (length grouping)))
-        (on-behavior-start behavior gobs)
-        (if (= (length gobs) 1)
-            (setf result (apply #'%process-gobs behavior gobs))
-            (map-combinations
+      (incf %ticks)
+      (when (and (>= %ticks %interval)
+                 (>= (length %gobs) (length %grouping)))
+        (on-behavior-start behavior %gobs)
+        (if (= (length %gobs) 1)
+            (setf result (apply #'%process-gobs behavior %gobs))
+            (alexandria:map-combinations
              (lambda (x) (setf result (apply #'%process-gobs behavior x)))
-             gobs :length (length grouping)))
-        (on-behavior-stop behavior gobs)
-        (setf ticks 0))
+             %gobs :length (length %grouping)))
+        (on-behavior-stop behavior %gobs)
+        (setf %ticks 0))
       result)))
 
 (defun cycle-behaviors ()

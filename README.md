@@ -4,8 +4,7 @@ An implementation of the Entity-Component System (ECS) pattern, popular with gam
 
 ## Overview
 
-This is an ECS implementation designed to be simple and flexible. It has not been tested in the wild
-yet, so if you do so, please feel free to file issues or lack of features you may encounter.
+This is an ECS implementation for game development that is designed to be simple and flexible.
 
 ## Install
 
@@ -83,5 +82,3 @@ Cycle the behaviors. This should be called in your main loop:
 Copyright © 2016-2018 [Michael Fiano](mailto:mail@michaelfiano.com).
 
 Licensed under the MIT License.
-
-A copy of the license is available [here](LICENSE).

@@ -1,4 +1,4 @@
-(in-package :gamebox-ecs)
+(in-package :box.ecs)
 
 (defun attrs (gob-id)
   "Get a list of all of a GOB's attributes."

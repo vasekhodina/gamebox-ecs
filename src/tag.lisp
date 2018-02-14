@@ -1,8 +1,8 @@
-(in-package :gamebox-ecs)
+(in-package :box.ecs)
 
 (defun tag-list ()
   "Get a list of all active tags. An active tag is a tag currently assigned to a GOB."
-  (hash-table-keys (%tags *ecs*)))
+  (alexandria:hash-table-keys (%tags *ecs*)))
 
 (defun tagp (tag)
   "Check if a tag is active."
@@ -42,9 +42,9 @@ ON-TAG-REMOVED event will be triggered for the deleted tag."
   "Add a tag to a GOB. If the specified GOB already has a different tag, it will be lost. If another
 GOB already has this tag, it will be lost. The ON-TAG-ADDED event will be triggered in order to
 provide custom functionality depending on the tag added."
-  (when-let ((previous-tag (get-tag gob-id)))
+  (alexandria:when-let ((previous-tag (get-tag gob-id)))
     (tag-delete previous-tag))
-  (when-let ((previous-gob (gob-by-tag tag)))
+  (alexandria:when-let ((previous-gob (gob-by-tag tag)))
     (tag-remove previous-gob))
   (unless (has-tag-p gob-id tag)
     (setf (%gob-tag (gob gob-id)) tag
@@ -54,7 +54,7 @@ provide custom functionality depending on the tag added."
 (defun tag-remove (gob-id)
   "Remove a tag from a GOB. The ON-TAG-REMOVED event will be triggered in order to provide custom
 functionality depending on the tag removed."
-  (when-let ((tag (get-tag gob-id)))
+  (alexandria:when-let ((tag (get-tag gob-id)))
     (setf (%gob-tag (gob gob-id)) nil)
     (remhash tag (%tags *ecs*))
     (on-tag-removed gob-id tag)))
