@@ -103,7 +103,7 @@
           :when (attr gob-id attr)
             :do (attr-remove gob-id attr))))
 
-(slog:define-message :debug :ecs.trait.add
+(simple-logger:define-message :debug :ecs.trait.add
   "GOB ~A now has the trait ~A.")
 
 (defgeneric on-trait-added (gob-id trait)
@@ -111,9 +111,9 @@
   (:method (gob-id trait))
   (:method :around (gob-id trait)
     (call-next-method)
-    (slog:emit :ecs.trait.add gob-id trait)))
+    (simple-logger:emit :ecs.trait.add gob-id trait)))
 
-(slog:define-message :debug :ecs.trait.remove
+(simple-logger:define-message :debug :ecs.trait.remove
   "GOB ~A no longer has the trait ~A.")
 
 (defgeneric on-trait-removed (gob-id trait)
@@ -121,4 +121,4 @@
   (:method (gob-id trait))
   (:method :around (gob-id trait)
     (call-next-method)
-    (slog:emit :ecs.trait.remove gob-id trait)))
+    (simple-logger:emit :ecs.trait.remove gob-id trait)))

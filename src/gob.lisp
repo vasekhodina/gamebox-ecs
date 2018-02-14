@@ -62,7 +62,7 @@
     (cache-gobs)
     (on-gob-deleted gob-id)))
 
-(slog:define-message :debug :ecs.gob.add
+(simple-logger:define-message :debug :ecs.gob.add
   "GOB ~A created.")
 
 (defgeneric on-gob-created (gob-id)
@@ -70,9 +70,9 @@
   (:method (gob-id))
   (:method :around (gob-id)
     (call-next-method)
-    (slog:emit :ecs.gob.add gob-id)))
+    (simple-logger:emit :ecs.gob.add gob-id)))
 
-(slog:define-message :debug :ecs.gob.remove
+(simple-logger:define-message :debug :ecs.gob.remove
   "GOB ~A deleted.")
 
 (defgeneric on-gob-deleted (gob-id)
@@ -80,4 +80,4 @@
   (:method (gob-id))
   (:method :around (gob-id)
     (call-next-method)
-    (slog:emit :ecs.gob.remove gob-id)))
+    (simple-logger:emit :ecs.gob.remove gob-id)))

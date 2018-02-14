@@ -87,7 +87,7 @@ of GOBs."
   (dolist (behavior (behavior-order *ecs*))
     (process-behavior behavior)))
 
-(slog:define-message :debug :ecs.behavior.start
+(simple-logger:define-message :debug :ecs.behavior.start
   "Behavior ~A started for ~A GOB~:p")
 
 (defgeneric on-behavior-start (behavior gobs)
@@ -95,9 +95,9 @@ of GOBs."
   (:method (behavior gobs))
   (:method :around (behavior gobs)
     (call-next-method)
-    (slog:emit :ecs.behavior.start behavior (length gobs))))
+    (simple-logger:emit :ecs.behavior.start behavior (length gobs))))
 
-(slog:define-message :debug :ecs.behavior.stop
+(simple-logger:define-message :debug :ecs.behavior.stop
   "Behavior ~A stopped for ~A GOB~:p")
 
 (defgeneric on-behavior-stop (behavior gobs)
@@ -105,4 +105,4 @@ of GOBs."
   (:method (behavior gobs))
   (:method :around (behavior gobs)
     (call-next-method)
-    (slog:emit :ecs.behavior.stop behavior (length gobs))))
+    (simple-logger:emit :ecs.behavior.stop behavior (length gobs))))

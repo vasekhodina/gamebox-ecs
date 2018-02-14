@@ -59,7 +59,7 @@ functionality depending on the tag removed."
     (remhash tag (%tags *ecs*))
     (on-tag-removed gob-id tag)))
 
-(slog:define-message :debug :ecs.tag.add
+(simple-logger:define-message :debug :ecs.tag.add
   "GOB ~A tagged as ~A.")
 
 (defgeneric on-tag-added (gob-id tag)
@@ -67,9 +67,9 @@ functionality depending on the tag removed."
   (:method (gob-id tag))
   (:method :around (gob-id tag)
     (call-next-method)
-    (slog:emit :ecs.tag.add gob-id tag)))
+    (simple-logger:emit :ecs.tag.add gob-id tag)))
 
-(slog:define-message :debug :ecs.tag.remove
+(simple-logger:define-message :debug :ecs.tag.remove
   "GOB ~A untagged as ~A.")
 
 (defgeneric on-tag-removed (gob-id tag)
@@ -77,4 +77,4 @@ functionality depending on the tag removed."
   (:method (gob-id tag))
   (:method :around (gob-id tag)
     (call-next-method)
-    (slog:emit :ecs.tag.remove gob-id tag)))
+    (simple-logger:emit :ecs.tag.remove gob-id tag)))

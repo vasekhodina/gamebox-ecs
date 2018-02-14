@@ -66,16 +66,16 @@ each group that was left."
   (dolist (group (groups gob-id))
     (group-leave gob-id group)))
 
-(slog:define-message :debug :ecs.group.join
+(simple-logger:define-message :debug :ecs.group.join
   "GOB ~A joined group ~A.")
 
 (defgeneric on-group-join (gob-id group)
   (:documentation "Event triggered when a GOB joins a group.")
   (:method (gob-id group))
   (:method :around (gob-id group)
-    (slog:emit :ecs.group.join gob-id group)))
+    (simple-logger:emit :ecs.group.join gob-id group)))
 
-(slog:define-message :debug :ecs.group.leave
+(simple-logger:define-message :debug :ecs.group.leave
   "GOB ~A left group ~A.")
 
 (defgeneric on-group-leave (gob-id group)
@@ -83,9 +83,9 @@ each group that was left."
   (:method (gob-id group))
   (:method :around (gob-id group)
     (call-next-method)
-    (slog:emit :ecs.group.leave gob-id group)))
+    (simple-logger:emit :ecs.group.leave gob-id group)))
 
-(slog:define-message :debug :ecs.group.remove
+(simple-logger:define-message :debug :ecs.group.remove
   "Group ~A deleted.")
 
 (defgeneric on-group-deleted (group)
@@ -93,4 +93,4 @@ each group that was left."
   (:method (group))
   (:method :around (group)
     (call-next-method)
-    (slog:emit :ecs.group.remove group)))
+    (simple-logger:emit :ecs.group.remove group)))

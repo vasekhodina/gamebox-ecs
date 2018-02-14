@@ -23,7 +23,7 @@
 (defun init-ecs (&key log-level)
   "Initialize the Ecstasy system, optionally setting the logging level for printing messages."
   (when log-level
-    (setf slog:*current-level* log-level))
+    (setf simple-logger:*current-level* log-level))
   (setf *ecs* (make-instance 'ecs))
   *ecs*)
 
